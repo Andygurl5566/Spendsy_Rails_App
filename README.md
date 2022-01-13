@@ -1,2 +1,2 @@
 # Spendsy_Rails
-# Spendy_Rails_App
+# Spendsy_Rails_App
