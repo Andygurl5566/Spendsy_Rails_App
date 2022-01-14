@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
   get '/users', to: 'users#index'
 
+
   get '/hello', to: 'application#hello_world'
 
   # Wallet Routes

@@ -2,16 +2,18 @@ import NavBar from "./Navbar"
 import {useState, useEffect} from 'react'
 import { useNavigate} from 'react-router-dom'
 
-function SignIn({setCurrentUser}) {
+function SignUp({setCurrentUser}) {
 
-function navToSignup(){
-  navigate("/signup")
-}
+function navToSignin(){
+ navigate("/signin")
+}  
 
 const [loggingIn, setLoggingIn] = useState(true)
 const navigate = useNavigate()
 const [formData, setFormData] = useState({
   email: "",
+  first_name: "",
+  last_name: "",
   password: ""
 })
 
@@ -27,12 +29,14 @@ const handleChange = (e) => {
 const handleSubmit = (e) => {
 
   e.preventDefault(); 
-  fetch(`/login`, {
+  const userCreds = { ...formData };
+
+  fetch(`/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(formData),
+    body: JSON.stringify(userCreds),
   })
   .then((res) => {
 
@@ -55,10 +59,29 @@ const handleSubmit = (e) => {
   return (
     <div>
       <NavBar />
-      <h1 class="login-requirements">{loggingIn ? <> <h3>Log in</h3> <br></br>Enter Username and Password </>: 'Please create a username and password'}</h1>
+      <h1 class="login-requirements">{loggingIn ? <> <h3>Signup</h3> <br></br> Please create a username and password</>:'Enter Username and Password' }</h1>
 
       <form className="bill-entry login-form" onSubmit={handleSubmit}>
-        
+      <label>First Name: </label>
+        <input
+          type='text'
+          className='input-field'
+          name= 'first_name'
+          required='required'
+          value={formData.first_name}
+          placeholder='First Name'
+          onChange={handleChange}></input>
+
+        <label>Last Name: </label>
+        <input
+          type='text'
+          className='input-field'
+          name= 'last_name'
+          required='required'
+          value={formData.last_name}
+          placeholder='Last Name'
+          onChange={handleChange}></input>
+
       <label>Email: </label>
         <input
           type='text'
@@ -70,7 +93,7 @@ const handleSubmit = (e) => {
           onChange={handleChange}></input>
         
 
-        <label>Password: </label>
+        <label>Password (8 characters or more ): </label>
         <input
           type='password'
           name='password'
@@ -82,7 +105,7 @@ const handleSubmit = (e) => {
           <div className="form-btn-container">
           
           {!loggingIn ? <p  className="btn btn-hover" >Log In</p>
-           : <p className="btn btn-hover" onClick={navToSignup} >Sign Up</p>}
+           : <p className="btn btn-hover" onClick={navToSignin}>Login</p>}
            <button className="btn btn-hover">Continue</button>
         </div>
       </form>
@@ -91,4 +114,4 @@ const handleSubmit = (e) => {
   )
 }
 
-export default SignIn
+export default SignUp

@@ -6,6 +6,7 @@ import Home from "./Home";
 import CreateWallet from "./CreateWallet";
 import SignIn from "./SignIn";
 import BillForm from './BillForm'
+import SignUp from "./SignUp";
 // Hooks
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route} from "react-router-dom";
@@ -43,6 +44,8 @@ function App() {
           <Route path="/wallet/page" element={<WalletPage />} />
           <Route path="/wallet/new" element={<CreateWallet />} />
           <Route path="/form" element={<BillForm />} />
+          <Route path="/signup" element={<SignUp setCurrentUser={setCurrentUser}/>} />
+
         </Routes>
       </div>
     </BrowserRouter>
