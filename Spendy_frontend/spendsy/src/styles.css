@@ -313,3 +313,7 @@ a:visited {
   color: black;
 }
 
+
+.errorCode{
+  color: rgb(194, 61, 61);
+}

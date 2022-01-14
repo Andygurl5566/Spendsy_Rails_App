@@ -60,7 +60,6 @@ const handleSubmit = (e) => {
     <div>
       <NavBar />
       <h1 class="login-requirements">{loggingIn ? <> <h3>Signup</h3> <br></br> Please create a username and password</>:'Enter Username and Password' }</h1>
-
       <form className="bill-entry login-form" onSubmit={handleSubmit}>
       <label>First Name: </label>
         <input

@@ -9,6 +9,7 @@ function navToSignup(){
 }
 
 const [loggingIn, setLoggingIn] = useState(true)
+const [showError, setShowError] = useState(false)
 const navigate = useNavigate()
 const [formData, setFormData] = useState({
   email: "",
@@ -46,6 +47,7 @@ const handleSubmit = (e) => {
     } else {
       res.json().then((errors) => {
         console.error(errors)
+        setShowError(true)
       }) //add navigate here later - same page but with an error message to the users
     }
   })
@@ -56,6 +58,7 @@ const handleSubmit = (e) => {
     <div>
       <NavBar />
       <h1 class="login-requirements">{loggingIn ? <> <h3>Log in</h3> <br></br>Enter Username and Password </>: 'Please create a username and password'}</h1>
+      <p class="login-requirements" > {showError == false ? "": <h4 className="errorCode">Incorrect Email or Password. Please try Again</h4>} </p>
 
       <form className="bill-entry login-form" onSubmit={handleSubmit}>
         
