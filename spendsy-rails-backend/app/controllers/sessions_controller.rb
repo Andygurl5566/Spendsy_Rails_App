@@ -20,9 +20,9 @@ class SessionsController < ApplicationController
     if user
       render json: user 
     else
-      render json: {error: "User not found"}, status: :not_authorized
+      render json: {error: "User not found"}, status: :unauthorized
   end
-
+end
 
 
 end

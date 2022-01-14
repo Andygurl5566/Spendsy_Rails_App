@@ -14,7 +14,7 @@ const [formData, setFormData] = useState({
 const navigate = useNavigate()
 
 useEffect( () =>{ 
-fetch(`http://localhost:9292/user`)
+fetch(`http://localhost:3000/me`)
   .then(resp => resp.json())
   .then(data => setUsers(data))
 }, [])
