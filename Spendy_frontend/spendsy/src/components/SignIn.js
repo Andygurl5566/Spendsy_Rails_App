@@ -1,82 +1,51 @@
 import NavBar from "./Navbar"
-import LoginPage from "./Home"
 import {useState, useEffect} from 'react'
-import {Route, useNavigate} from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 
-function SignIn() {
+function SignIn({setCurrentUser}) {
 
 const [loggingIn, setLoggingIn] = useState(true)
-const [users, setUsers] = useState([])
-const [formData, setFormData] = useState({
-  username: '',
-  password: ''
-})
 const navigate = useNavigate()
+const [formData, setFormData] = useState({
+  email: "",
+  password: ""
+})
 
-useEffect( () =>{ 
-fetch(`http://localhost:3000/me`)
-  .then(resp => resp.json())
-  .then(data => setUsers(data))
-}, [])
-
-const logIn = (e ,username, password) => {
-  e.preventDefault()
-
- if(users.find(user => user.name === username.trim() && user.password === password.trim())) {
-   localStorage.setItem('username', username)
-  navigate(`/home`)
- } else {
-   alert('Incorrect login information')
- }
-
-  // if(users.find() !== username || formData.username !== password ){
-  //   alert('Please try again')
-  // } else {
-
-  }
-const createWallet= (username, ) => {
-  const walletAmount = prompt("What is your monthly income? ")
-  fetch(`http://localhost:9292/user/wallets/${localStorage.getItem('username')}`, {
-    method: 'POST',
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      wallet_name: `${username}'s Wallet`,
-      amount: walletAmount
-    })
-  })
-  .then(resp => resp.json())
-}
-
-const signUp = (e, username, password) => {
-  e.preventDefault()
-  localStorage.setItem('username', username)
-
-  fetch(`http://localhost:9292/user/login`, {
-    method: 'POST',
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      name: username,
-      password: password
-    })
-  })
-  .then(resp => resp.json())
-  .then(alert('New user created'))
-
-  createWallet(username, password)
-  navigate('/home')
-}
-
-const handleLoggingIn = () => {
-  setLoggingIn(!loggingIn)
-}
-
-const handleFormData = (e) => {
-  setFormData({ ...formData, [e.target.name]: e.target.value });
+const handleChange = (e) => {
+  setFormData({
+    ...formData,
+    [e.target.name]: e.target.value,
+  });
+  console.log(formData)
 };
+
+
+const handleSubmit = (e) => {
+
+  e.preventDefault(); 
+  fetch(`/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  })
+  .then((res) => {
+
+    console.log(res)
+    if (res.ok) {
+      res.json().then((user) => {
+        setCurrentUser(user)
+      
+      })
+      .then(() => navigate("/wallet/page"))
+    } else {
+      res.json().then((errors) => {
+        console.error(errors)
+      }) //add navigate here later - same page but with an error message to the users
+    }
+  })
+}
 
 
   return (
@@ -84,17 +53,19 @@ const handleFormData = (e) => {
       <NavBar />
       <h1 class="login-requirements">{loggingIn ? 'Enter Username and Password' : 'Please create a username and password'}</h1>
 
-      <form className="bill-entry login-form" onSubmit={loggingIn ? (e) => logIn(e, formData.username, formData.password)
-         : (e) => signUp(e, formData.username, formData.password)}>
-        <label>Username: </label>
+      <form className="bill-entry login-form" onSubmit={handleSubmit}>
+        
+      <label>Email: </label>
         <input
           type='text'
           className='input-field'
-          name= 'username'
+          name= 'email'
           required='required'
-          value={formData.username}
-          placeholder='Username'
-          onChange={(e) => handleFormData(e)}></input>
+          value={formData.email}
+          placeholder='Email'
+          onChange={handleChange}></input>
+        
+
         <label>Password: </label>
         <input
           type='text'
@@ -103,11 +74,11 @@ const handleFormData = (e) => {
           className='input-field'
           value={formData.password}
           placeholder='Password'
-          onChange={(e) => handleFormData(e)}></input>
+          onChange={handleChange}></input>
           <div className="form-btn-container">
           <button className="btn btn-hover">Continue</button>
-          {!loggingIn ? <p  className="btn btn-hover" onClick={handleLoggingIn}>Log In</p>
-           : <p className="btn btn-hover" onClick={handleLoggingIn}>Sign Up</p>}
+          {!loggingIn ? <p  className="btn btn-hover" >Log In</p>
+           : <p className="btn btn-hover" >Sign Up</p>}
         </div>
       </form>
         
