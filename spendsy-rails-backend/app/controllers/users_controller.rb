@@ -2,14 +2,22 @@ class UsersController < ApplicationController
   before_action :authenticate_user
   skip_before_action :authenticate_user, only: [:create, :show]
 
+  def index
+    user = User.all
+    render json: user
+  end
+  
+  
   def show
     user = User.find(params[:id])
     if user
-      render json: user
+      render json: user, include: :wallets
     else
       render json: {error: "Not Found"}, status: :not_found
     end
   end
+
+ 
 
   def create
     user = User.create(user_params)
@@ -30,7 +38,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.permit(:id, :first_name, :last_name, :email, :password, :password_confirmation)
+    params.permit( :first_name, :last_name, :email, :password, :password_confirmation)
   end
 
   def authenticate_user

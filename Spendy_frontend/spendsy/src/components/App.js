@@ -8,20 +8,36 @@ import SignIn from "./SignIn";
 import BillForm from './BillForm'
 // Hooks
 import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Link} from "react-router-dom";
-import WalletForm from "./BillForm";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 
 function App() {
 
+  //State Variables
+  const [currentUser, setCurrentUser] = useState({})
+
+
+  useEffect(()=> {
+    fetch("/me")
+    .then((r) => r.json())
+        .then((user) => {
+          setCurrentUser(user)       
+          console.log(user)
+        })
+  }, [])
+
+  
+  
  
 
   return (
     <BrowserRouter>
+
+    
       <div className="App">
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/wallet" element={<Wallet />} />
-          <Route path='/signIn' element={<SignIn />} />
+          <Route path='/signIn' element={<SignIn setCurrentUser={setCurrentUser}/>} />
           <Route path="/home" element={<Home />} />
           <Route path="/wallet" element={<Wallet />} />
           <Route path="/wallet/page" element={<WalletPage />} />
