@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 2022_01_13_144638) do
     t.integer "bill_amount"
     t.string "category_name"
     t.integer "wallet_id"
+    t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

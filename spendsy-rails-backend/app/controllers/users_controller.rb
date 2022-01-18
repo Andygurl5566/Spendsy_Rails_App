@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user
-  skip_before_action :authenticate_user, only: [:create, :show]
+  skip_before_action :authenticate_user, only: [:create, :show, :user_wallet, :wallet_total]
 
   def index
     user = User.all
@@ -17,25 +17,34 @@ class UsersController < ApplicationController
     end
   end
 
- 
+  def user_wallet
+    user = User.find(session[:user_id])
+    wallet = user.wallets.find(params[:id])
+    wallet_total = wallet.total
+    render json: wallet, include: :bills
+  end
+
+  def wallet_total
+    user = User.find(session[:user_id])
+    wallet = user.wallets.find(params[:id])
+    wallet_total = wallet.total
+    render json: wallet_total
+  end
 
   def create
     user = User.create(user_params)
-  
     if user.valid?
       session[:user_id] = user.id
+      Wallet.create(name: "#{user.first_name}'s Wallet", amount: 0, user_id: user.id)
       render json: user, status: :created
     else
       render json: {errors: user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
-  def user_wallets
-    @current_user.wallets
-  end
-
 
   private
+
 
   def user_params
     params.permit( :first_name, :last_name, :email, :password, :password_confirmation)

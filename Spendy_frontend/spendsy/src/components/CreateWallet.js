@@ -20,8 +20,6 @@ function CreateWallet(){
   return (
     <>
     <div>
-      <NavBar />
-
       <form class="create-wallet-form">
         <label for="wallet-name">Wallet Name: </label>
         <input 

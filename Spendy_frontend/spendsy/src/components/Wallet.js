@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 
-function Wallet() {
+function Wallet({currentUser, currentWallet, currentUser:{bills}}) {
   // Global States
-  const [wallet, setWallet] = useState({})
   const [walletBills, setWalletBills] = useState([])
   const [total, setTotal] = useState(0)
 
@@ -26,72 +25,7 @@ function Wallet() {
     })
   }
 
-  // Fetch on load
-  useEffect(() => {
-    fetch(`http://localhost:9292/user/wallets/bills/${localStorage.getItem('username')}`)
-    .then(resp => resp.json())
-    .then(user => {
-      setWalletBills(user.wallets[0].bills)
-      console.log(user.wallets[0].bills)
-    })
-  }
-  , [])
-  
-  useEffect( () =>{
-    fetch(`http://localhost:9292/user/wallets/${localStorage.getItem('username')}`)
-    .then(resp => resp.json())
-    .then(user => setWallet(user.wallets[0]))
-  }
-  , [])
-  
-  useEffect ( () => {
-    fetch(`http://localhost:9292/user/wallets/bills/total/${localStorage.getItem('username')}`)
-    .then(resp => resp.json())
-    .then(totalValue => setTotal(totalValue))
-  }, [])
-
-  
-  
-
-//  Delete specific Bill
-  function handleWalletDelete(id){
-
-     if(window.confirm("Are you sure you want to delete this bill?")){
-        fetch(`http://localhost:9292/bill/${id}`,{
-         method: "DELETE",  
-  })
-        .then((r) => r.json())
-        .then((deletedWallet) => console.log(deletedWallet))
-        .then(json => {
-          // fetch the updated data
-          getBills()
-          getTotal()
-      })
-  }
-}
-
-
-// Get all the bills in the first wallet
-const getBills = () => {
-  fetch(`http://localhost:9292/user/wallets/bills/${localStorage.getItem('username')}  `)
-    .then(resp => resp.json())
-    .then(user => setWalletBills(user.wallets[0].bills))
-}
-
-// Get Total from all bill amounts
-const getTotal = () =>{
-    fetch(`http://localhost:9292/user/wallets/bills/total/${localStorage.getItem('username')}`)
-    .then(resp => resp.json())
-    .then(totalValue => setTotal(totalValue))
-  }
-
-// Clears all state so next edit fields are empty
-const clearState = () => {
-  setBillName('')
-  setBillAmount(null)
-  setCategoryName('')
-}
-// Handle State on change functions
+  // Handle State on change functions
 const handleBillName = (e) => {
   setBillName(e.target.value)
 }
@@ -104,36 +38,8 @@ const handleCategoryName = (e) => {
   setCategoryName(e.target.value)
 }
 
-
-// EDIT ROW/PATCH FUNCTIONS
-const updateRow = ({id, bill_name, bill_amount, category_name}) => {
-    console.log(bill_name)
-    fetch(`http://localhost:9292/bill/${id}`, {
-        method: "PATCH",
-        headers: {
-            "Content-type": "application/json"
-        },
-        body: JSON.stringify({
-            bill_name: bill_name,
-            bill_amount: bill_amount,
-            category_name: category_name
-            // bill_amount: bill_amount
-        })
-    })
-        .then(response => response.json())
-        .then(json => {
-          // reset inEditMode and unit price state values
-          onCancel();
-
-          // fetch the updated data
-          getBills()
-          getTotal()
-          clearState()
-      })
-}
-
+// reset the inEditMode state value
   const onCancel = () => {
-    // reset the inEditMode state value
     setInEditMode({
         status: false,
         rowKey: null
@@ -141,20 +47,93 @@ const updateRow = ({id, bill_name, bill_amount, category_name}) => {
 }
 
 
+  // Fetch all bills for wallet and total
+
+  useEffect(() => {
+    fetch(`/userwallet/${currentWallet.id}`)
+    .then(resp => resp.json())
+    .then(data => {
+      setWalletBills(data.bills)
+      getTotal()
+    })
+    }, [])
+
+
+// Get all the bills for the wallet (after deleting or editing a bill)
+  const getBills = (currentWallet) => {
+    fetch(`/userwallet/${currentWallet}`)
+    .then(resp => resp.json())
+    .then(data => setWalletBills(data.bills))
+  }
+
+// Get Total from all bill amounts
+  const getTotal = () =>{
+    fetch(`/total/${currentWallet.id}`)
+    .then(resp => resp.json())
+    .then(totalValue => setTotal(totalValue))
+  }
+
+// Clears all state so next edit fields are empty
+  const clearState = () => {
+  setBillName('')
+  setBillAmount(null)
+  setCategoryName('')
+  }
+
+
+//  Delete a bill
+  function handleBillDelete(id, currentWallet){
+     if(window.confirm("Are you sure you want to delete this bill?")){
+        fetch(`/bills/${id}`,{
+         method: "DELETE",  
+        })
+        .then(() => {
+          // fetch the updated data
+          getBills(currentWallet)
+          getTotal()
+      })
+  }
+}
+
+// EDIT ROW/PATCH FUNCTIONS
+const updateRow = ({id, bill_name, bill_amount, category_name}, currentWallet) => {
+  fetch(`/bills/${id}`, {
+      method: "PATCH",
+      headers: {
+          "Content-type": "application/json"
+      },
+      body: JSON.stringify({
+          bill_name: bill_name,
+          bill_amount: bill_amount,
+          category_name: category_name
+      })
+  })
+      .then(response => response.json())
+      .then(() => {
+        // reset inEditMode and unit price state values
+        onCancel();
+
+        // fetch the updated data
+        getBills(currentWallet)
+        getTotal()
+        clearState()
+    })
+}
+
+
 // ---------------------------------------------------------------------
 
   return (
-
-    
     <div className="wallet-container">
+      {walletBills && currentUser &&
+      <>
       <Link to="/form">
-
         <button className="new-wallet-btn btn-hover">Add New Bill</button>
       </Link>
 {/* Wallet Header and Info */}
       <div className="wallet-info">
-        <h1 className="wallet-name">{wallet.wallet_name}</h1>
-        <h1 className="wallet-amount">Funds: {wallet.amount}</h1>
+        <h1 className="wallet-name">{currentWallet.name}</h1>
+        <h1 className="wallet-amount">Funds: {currentWallet.amount}</h1>
       </div>
       <table className="bills">
         <thead>
@@ -208,9 +187,9 @@ const updateRow = ({id, bill_name, bill_amount, category_name}) => {
             <td>
               {inEditMode.status && inEditMode.rowKey === bill.id ? 
             <>
-              <button className="edit-btn table-btn" onClick={() => updateRow({id: bill.id, bill_name: billName, bill_amount: billAmount, category_name: categoryName})}>
+              <button className="edit-btn table-btn" onClick={() => updateRow({id: bill.id, bill_name: billName, bill_amount: billAmount, category_name: categoryName}, currentWallet.id)}>
                 Save</button>
-              <button className="edit-btn table-btn" onClick={() => handleWalletDelete(bill.id)}>Delete</button> 
+              <button className="edit-btn table-btn" onClick={() => handleBillDelete(bill.id, currentWallet.id)}>Delete</button> 
             </> 
             :<button className=" edit-btn table-btn" onClick={() => onEdit({id: bill.id, currentBillName: billName, currentBillAmount: billAmount, currentCategoryName: categoryName})}>
                 Edit
@@ -225,10 +204,12 @@ const updateRow = ({id, bill_name, bill_amount, category_name}) => {
         <td>{total}</td>
         <td></td>
         <td>
-          <p>Remaining Funds: {wallet.amount - total}</p>
+          <p>Remaining Funds: {currentWallet.amount - total}</p>
          </td>
         </tfoot>
       </table>
+      </>
+  }
     </div>
   );
 }

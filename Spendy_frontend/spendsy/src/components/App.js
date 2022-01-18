@@ -7,6 +7,7 @@ import CreateWallet from "./CreateWallet";
 import SignIn from "./SignIn";
 import BillForm from './BillForm'
 import SignUp from "./SignUp";
+import NavBar from "./Navbar";
 // Hooks
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route} from "react-router-dom";
@@ -14,7 +15,7 @@ import { BrowserRouter, Routes, Route} from "react-router-dom";
 function App() {
 
   //State Variables
-  const [currentUser, setCurrentUser] = useState({})
+  const [currentUser, setCurrentUser] = useState(null)
 
 
   useEffect(()=> {
@@ -22,11 +23,18 @@ function App() {
     .then((r) => r.json())
         .then((user) => {
           setCurrentUser(user)       
-          console.log(user)
         })
   }, [])
 
-  
+  const logout = () => {
+    fetch('/logout', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(() => setCurrentUser(null))
+  }
   
  
 
@@ -35,16 +43,17 @@ function App() {
 
     
       <div className="App">
+        <NavBar currentUser={currentUser} logout={logout}/>
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/wallet" element={<Wallet />} />
           <Route path='/signIn' element={<SignIn setCurrentUser={setCurrentUser}/>} />
           <Route path="/home" element={<Home />} />
           <Route path="/wallet" element={<Wallet />} />
-          <Route path="/wallet/page" element={<WalletPage />} />
+          <Route path="/wallet/page" element={<WalletPage currentUser={currentUser}/>} />
           <Route path="/wallet/new" element={<CreateWallet />} />
-          <Route path="/form" element={<BillForm />} />
-          <Route path="/signup" element={<SignUp setCurrentUser={setCurrentUser}/>} />
+          <Route path="/form" element={<BillForm currentUser={currentUser}/>} />
+          <Route path="/signup" element={<SignUp setCurrentUser={setCurrentUser} currentUser={currentUser}/>} />
 
         </Routes>
       </div>

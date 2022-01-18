@@ -15,7 +15,6 @@ function Landing(){
   return (
     
     <div>
-      <Navbar handleLogin={handleLogin} />
       <main className= "main-text">
         <p>Welcome to <span className="spendsy spendsy-animation">Spendsy, </span>
           <br/>

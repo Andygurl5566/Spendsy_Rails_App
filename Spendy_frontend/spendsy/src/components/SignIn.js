@@ -21,7 +21,6 @@ const handleChange = (e) => {
     ...formData,
     [e.target.name]: e.target.value,
   });
-  console.log(formData)
 };
 
 
@@ -39,9 +38,9 @@ const handleSubmit = (e) => {
 
     console.log(res)
     if (res.ok) {
-      res.json().then((user) => {
+      res.json()
+      .then((user) => {
         setCurrentUser(user)
-      
       })
       .then(() => navigate("/wallet/page"))
     } else {
@@ -56,7 +55,6 @@ const handleSubmit = (e) => {
 
   return (
     <div>
-      <NavBar />
       <h1 class="login-requirements">{loggingIn ? <> <h3>Log in</h3> <br></br>Enter Username and Password </>: 'Please create a username and password'}</h1>
       <p class="login-requirements" > {showError == false ? "": <h4 className="errorCode">Incorrect Email or Password. Please try Again</h4>} </p>
 

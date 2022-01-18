@@ -3,11 +3,12 @@ import NavBar from "./Navbar"
 
 
 // Possibly add handleadbills function. will do a post fetch 
-function WalletPage(){
+function WalletPage({currentUser}){
   return (
     <div>
-      <NavBar />
-      <Wallet />
+      {currentUser && 
+     currentUser.wallets.map(wallet => <Wallet currentUser={currentUser} currentWallet={wallet}/>)
+     }
     </div>
   )
 }

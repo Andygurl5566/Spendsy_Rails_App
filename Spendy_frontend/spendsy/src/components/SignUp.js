@@ -2,63 +2,80 @@ import NavBar from "./Navbar"
 import {useState, useEffect} from 'react'
 import { useNavigate} from 'react-router-dom'
 
-function SignUp({setCurrentUser}) {
+function SignUp({setCurrentUser, currentUser}) {
 
-function navToSignin(){
- navigate("/signin")
-}  
+  function navToSignin(){
+  navigate("/signin")
+  }  
 
-const [loggingIn, setLoggingIn] = useState(true)
-const navigate = useNavigate()
-const [formData, setFormData] = useState({
-  email: "",
-  first_name: "",
-  last_name: "",
-  password: ""
-})
-
-const handleChange = (e) => {
-  setFormData({
-    ...formData,
-    [e.target.name]: e.target.value,
-  });
-  console.log(formData)
-};
-
-
-const handleSubmit = (e) => {
-
-  e.preventDefault(); 
-  const userCreds = { ...formData };
-
-  fetch(`/signup`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userCreds),
+  const [loggingIn, setLoggingIn] = useState(true)
+  const navigate = useNavigate()
+  const [formData, setFormData] = useState({
+    email: "",
+    first_name: "",
+    last_name: "",
+    password: ""
   })
-  .then((res) => {
 
-    console.log(res)
-    if (res.ok) {
-      res.json().then((user) => {
-        setCurrentUser(user)
-      
+  const createFirstWallet = () => {
+    
+    let walletAmount = prompt('How much would you like in your wallet?')
+
+    fetch(`/wallets`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: `${currentUser.first_name}'s Wallet`,
+        amount: walletAmount,
+        user_id: currentUser.id
       })
-      .then(() => navigate("/wallet/page"))
-    } else {
-      res.json().then((errors) => {
-        console.error(errors)
-      }) //add navigate here later - same page but with an error message to the users
-    }
-  })
-}
+    })
+    .then(resp => resp.json())
+  }
 
+  // Handles form data
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+
+  const handleSubmit = (e) => {
+
+    e.preventDefault(); 
+    const userCreds = { ...formData };
+
+    fetch(`/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userCreds),
+    })
+    .then((res) => {
+      if (res.ok) {
+        res.json()
+        .then((user) => {
+          setCurrentUser(user)
+          console.log(currentUser)
+        })
+      } else {
+        res.json().then((errors) => {
+          console.error(errors)
+        }) //add navigate here later - same page but with an error message to the users
+      }
+    }).then(() => {
+      navigate("/wallet/page")
+    })
+    // currentUser&& createFirstWallet()
+  }
 
   return (
     <div>
-      <NavBar />
       <h1 class="login-requirements">{loggingIn ? <> <h3>Signup</h3> <br></br> Please create a username and password</>:'Enter Username and Password' }</h1>
       <form className="bill-entry login-form" onSubmit={handleSubmit}>
       <label>First Name: </label>

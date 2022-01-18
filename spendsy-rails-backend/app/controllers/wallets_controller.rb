@@ -1,5 +1,9 @@
 class WalletsController < ApplicationController
 
+  def index
+    wallets = Wallet.all 
+    render json: wallets
+  end
 
   def create
     wallet = Wallet.create(wallet_params)
@@ -26,4 +30,10 @@ class WalletsController < ApplicationController
     render json: wallet
   end
 
+
+  private
+
+  def wallet_params
+    params.permit(:user_id, :amount, :name)
+  end
 end

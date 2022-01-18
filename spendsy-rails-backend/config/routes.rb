@@ -15,6 +15,9 @@ Rails.application.routes.draw do
 
   get '/users', to: 'users#index'
 
+  get '/userwallet/:id', to: 'users#user_wallet'
+
+  get '/total/:id', to: 'users#wallet_total'
 
   get '/hello', to: 'application#hello_world'
 

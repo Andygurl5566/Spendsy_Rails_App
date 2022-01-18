@@ -5,25 +5,25 @@ import { Link } from "react-router-dom";
 
 
 
-function WalletForm() {
+function BillForm({currentUser}) {
   
-  const [wallet, setWallet] = useState({})
   const [billList, setBillList] = useState([]);
   const [formData, setFormData] = useState({
     bill_name: "",
-    bill_amount: "",
+    bill_amount: null,
     category_name: "",
+    wallet_id: null,
   });
 
-   useEffect( () =>{
-    fetch(`http://localhost:9292/user/wallets/${localStorage.getItem('username')}`)
-    .then(resp => resp.json())
-    .then(user => {
-      // setWallet(wallets)
-      setWallet(user.wallets[0])
-    })
-  }
-  , [])
+  //  useEffect( () =>{
+  //   fetch(`http://localhost:9292/user/wallets/${localStorage.getItem('username')}`)
+  //   .then(resp => resp.json())
+  //   .then(user => {
+  //     // setWallet(wallets)
+  //     setWallet(user.wallets[0])
+  //   })
+  // }
+  // , [])
 
 const clearState = () => {
     setFormData(
@@ -34,19 +34,21 @@ const clearState = () => {
 }
 
 
+
   const handleData = (dataValue) => {
-    const { bill_name, bill_amount, category_name } = dataValue;
-    fetch(`http://localhost:9292/user/wallets/bills/${localStorage.getItem('username')}`, {
+    const { bill_name, bill_amount, category_name, wallet_id} = dataValue;
+    fetch(`/bills`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        bill_name: bill_name,
-        bill_amount: bill_amount,
-        category_name: category_name,
-        wallet_id: wallet.id
-      }),
+        bill_name,
+        bill_amount,
+        category_name,
+        wallet_id,
+        user_id: currentUser.id
+      })
     })
       .then((resp) => resp.json())
       .then((data) => {
@@ -67,12 +69,11 @@ const clearState = () => {
     console.log(formData);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-console.log(formData)
 
 
   return (
     <div>
-      <NavBar />
+      {currentUser &&
       <form className="bill-entry" onSubmit={(e) => handleSubmitForm(e)}>
         <label>Bill:</label>
         <br />
@@ -95,6 +96,21 @@ console.log(formData)
           value={formData.bill_amount}
           onChange={addToBills}
         ></input>
+        <br />
+        <label>Wallet:</label>
+        <br />
+        <select
+          className="input-field"
+          value={formData.wallet_id}
+          onChange={addToBills}
+          name="wallet_id"
+        >
+          <option></option>
+
+          {currentUser.wallets.map(wallet => {
+            return <option value={wallet.id}>{wallet.name}</option>
+          })}  
+        </select>
         <br />
         <label>Category:</label>
         <br />
@@ -126,12 +142,12 @@ console.log(formData)
           </Link>
         </div>
       </form>
-     
+     }
     </div>
   );
 }
 
-export default WalletForm;
+export default BillForm;
 
 
 

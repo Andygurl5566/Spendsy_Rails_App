@@ -1,9 +1,8 @@
 import {useState} from 'react'
 import {Link} from 'react-router-dom'
 
-function NavBar({handleLogin}) {
+function NavBar({currentUser, logout}) {
 
-  const [loggedIn, setLoggedIn] = useState(false)
 
   return(
     <>
@@ -12,7 +11,13 @@ function NavBar({handleLogin}) {
       <span>Spendsy <i class="fas fa-coins"></i></span>
 
       <div className="navlink-buttons"> 
-            <Link to= "/signIn"><button className="navlink"onClick={() => setLoggedIn(!loggedIn)}>Login</button></Link>
+          {currentUser ?
+            <Link to= "/">
+              <button className="navlink" onClick={() => logout()}>Logout</button>
+            </Link>
+            : <Link to= "/signIn">
+              <button className="navlink">Login</button>
+            </Link>}
         <Link to='/'>
           <button className="navlink">Home</button>
         </Link>
