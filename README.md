@@ -1,3 +1,4 @@
+
 # Spendsy
 
 Money management made simple.
