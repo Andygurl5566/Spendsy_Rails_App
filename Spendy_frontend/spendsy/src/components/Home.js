@@ -2,15 +2,15 @@ import Navbar from './Navbar'
 import {useState, useEffect} from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-function Home(){
-
+function Home({currentUser}){
+console.log(currentUser)
   
   
   return (
     
     <div>
       <main className= "main-text">
-        <p>Welcome, <span className="spendsy spendsy-animation">{localStorage.getItem('username')}!</span>
+        <p>Welcome, <span className="spendsy spendsy-animation">{currentUser.first_name}!</span>
           <br/>
           Let's get started! <br/>Your financial snapshot is just one click away </p>
         <div className='btn-container'>
@@ -30,7 +30,7 @@ function Home(){
         />
 
       <div className="customer-faces">
-        <img src="https://media.istockphoto.com/photos/learn-to-love-yourself-first-picture-id1291208214?k=20&m=1291208214&s=612x612&w=0&h=WbHbwklzP81iAWV0dPlQWuBLxnbqJFk81a9OZG6qvSM="
+      <img src="https://www.kindpng.com/picc/m/673-6735417_young-lady-smiling-radiantly-smiling-black-lady-png.png"
         className="customer-image"/>
         <img src="https://i.pinimg.com/originals/d1/b8/27/d1b8272dba69e9a3384f47797aa71e93.jpg  "
         className="customer-image"/>

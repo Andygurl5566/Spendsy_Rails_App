@@ -91,6 +91,7 @@ main p span {
 
 .customer-faces {
   margin-left: 2%;
+  
 }
 
 .customer-image {
@@ -98,6 +99,10 @@ main p span {
   width: 175px;
   border-radius: 50%;
   margin: 5rem 3rem;
+  object-fit: cover;
+  object-position: center;
+  background-repeat: repeat;
+  
 }
 
 .landing-wallet {

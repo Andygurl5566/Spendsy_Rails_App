@@ -15,15 +15,6 @@ function BillForm({currentUser}) {
     wallet_id: null,
   });
 
-  //  useEffect( () =>{
-  //   fetch(`http://localhost:9292/user/wallets/${localStorage.getItem('username')}`)
-  //   .then(resp => resp.json())
-  //   .then(user => {
-  //     // setWallet(wallets)
-  //     setWallet(user.wallets[0])
-  //   })
-  // }
-  // , [])
 
 const clearState = () => {
     setFormData(

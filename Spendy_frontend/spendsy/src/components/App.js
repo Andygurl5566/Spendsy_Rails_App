@@ -48,7 +48,7 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/wallet" element={<Wallet />} />
           <Route path='/signIn' element={<SignIn setCurrentUser={setCurrentUser}/>} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/home" element={<Home currentUser={currentUser} />} />
           <Route path="/wallet" element={<Wallet />} />
           <Route path="/wallet/page" element={<WalletPage currentUser={currentUser}/>} />
           <Route path="/wallet/new" element={<CreateWallet />} />
