@@ -28,8 +28,9 @@ function BillForm({currentUser}) {
 const clearState = () => {
     setFormData(
     {bill_name: "",
-    bill_amount: "",
-    category_name: ""
+    bill_amount: '',
+    category_name: "",
+    wallet_id: ''
   })
 }
 
