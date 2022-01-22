@@ -62,14 +62,23 @@ function SignUp({setCurrentUser, currentUser}) {
         .then((user) => {
           setCurrentUser(user)
           console.log(currentUser)
-        })
+        }) 
+        
+        fetch("/me")
+      .then((r) => r.json())
+          .then((user) => {
+            setCurrentUser(user)       
+          })
+
+        .then(() => navigate("/home"))
+
       } else {
         res.json().then((errors) => {
           console.error(errors)
         }) //add navigate here later - same page but with an error message to the users
       }
     }).then(() => {
-      navigate("/wallet/page")
+      navigate("/signup")
     })
     // currentUser&& createFirstWallet()
   }

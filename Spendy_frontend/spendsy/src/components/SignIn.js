@@ -40,14 +40,22 @@ const handleSubmit = (e) => {
     if (res.ok) {
       res.json()
       .then((user) => {
-        setCurrentUser(user)
-      })
-      .then(() => navigate("/wallet/page"))
+        setCurrentUser(user) 
+        console.log(setCurrentUser)
+      }) 
+      fetch("/me")
+      .then((r) => r.json())
+          .then((user) => {
+            setCurrentUser(user)       
+          })
+      
+      .then(() => navigate("/home"))
+      
     } else {
       res.json().then((errors) => {
         console.error(errors)
         setShowError(true)
-      }) //add navigate here later - same page but with an error message to the users
+      })
     }
   })
 }

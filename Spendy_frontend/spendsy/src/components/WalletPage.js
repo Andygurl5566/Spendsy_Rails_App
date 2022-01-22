@@ -1,5 +1,4 @@
 import Wallet from "./Wallet"
-import NavBar from "./Navbar"
 
 
 // Possibly add handleadbills function. will do a post fetch 
