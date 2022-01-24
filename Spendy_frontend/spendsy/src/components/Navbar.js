@@ -12,15 +12,24 @@ function NavBar({currentUser, logout}) {
 
       <div className="navlink-buttons"> 
           {currentUser ?
+          <>
             <Link to= "/">
               <button className="navlink" onClick={() => logout()}>Logout</button>
             </Link>
-            : <Link to= "/signIn">
+            <Link to='/wallet/page'>
+              <button className="navlink">Wallets</button>
+            </Link>
+          </>
+          : 
+          <>
+            <Link to= "/signIn">
               <button className="navlink">Login</button>
-            </Link>}
-        <Link to='/'>
-          <button className="navlink">Home</button>
-        </Link>
+            </Link>
+            <Link to='/'>
+              <button className="navlink">Home</button>
+            </Link>
+          </>
+            }
         </div>
       </nav>
     </>

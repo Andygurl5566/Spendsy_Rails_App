@@ -141,14 +141,24 @@ main p span {
   display: flex;
   justify-content: space-between;
 }
+
+.new-bill-btn {
+  height: 5rem;
+  width: 22rem;
+  /* margin-top: 3rem; */
+  background-color: #3ABF78;
+  color: white;
+  font-size: 2rem;
+}
+
 .new-wallet-btn {
   height: 5rem;
   width: 22rem;
   margin-top: 3rem;
   background-color: #3ABF78;
   color: white;
-  font-size: 2rem;}
-
+  font-size: 2rem;
+}
 table {
   margin: 0% auto;
   height: 20vh;

@@ -3,20 +3,28 @@ import { Link } from "react-router-dom";
 
 
 function Wallet({currentUser, currentWallet, currentUser:{bills}}) {
-  // Global States
+  // State Variables
   const [walletBills, setWalletBills] = useState([])
   const [total, setTotal] = useState(0)
-
-
-  // Edit Table Data States
+  const [billName, setBillName] = useState('');
+  const [billAmount, setBillAmount] = useState(null)
+  const [categoryName, setCategoryName] = useState('')
+  const [changeFunds, setChangeFunds] = useState(false)
+  const [makeWallet, setMakeWallet] = useState(false)
+  const [newWallet, setNewWallet] = useState({
+    walletName: '',
+    walletAmount: 0,
+    user_id: currentUser.id
+  })
   const [inEditMode, setInEditMode] = useState({
     status: false,
     rowkey: null
   })
+  const [walletInfo, setWalletInfo] = useState({
+    name: currentWallet.name,
+    funds: 0
+  })
 
-  const [billName, setBillName] = useState('');
-  const [billAmount, setBillAmount] = useState(null)
-  const [categoryName, setCategoryName] = useState('')
 
   const onEdit = ({id}) => {
     setInEditMode({
@@ -38,6 +46,33 @@ const handleCategoryName = (e) => {
   setCategoryName(e.target.value)
 }
 
+const showWalletForm = () => setMakeWallet(!makeWallet)
+const handleNewWallet = (e) =>   setNewWallet({ ...newWallet, [e.target.name]: e.target.value });
+
+const changeWallet = () => setChangeFunds(!changeFunds)
+
+const handleWalletInfo = (e) => {
+  setWalletInfo({ ...walletInfo, [e.target.name]: e.target.value });
+}
+
+const updateWalletInfo = (id) => {
+  const updatedWallet = {
+    name: walletInfo.name,
+    amount: walletInfo.funds
+  }
+  fetch (`/wallets/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(updatedWallet)
+  })
+  .then(resp => resp.json())
+  .then(() => {
+    setChangeFunds(false)
+    window.location.reload()
+  })
+}
 // reset the inEditMode state value
   const onCancel = () => {
     setInEditMode({
@@ -47,16 +82,6 @@ const handleCategoryName = (e) => {
 }
 
 
-  // Fetch all bills for wallet and total
-
-  useEffect(() => {
-    fetch(`/userwallet/${currentWallet.id}`)
-    .then(resp => resp.json())
-    .then(data => {
-      setWalletBills(data.bills)
-      getTotal()
-    })
-    }, [])
 
 
 // Get all the bills for the wallet (after deleting or editing a bill)
@@ -127,13 +152,60 @@ const updateRow = ({id, bill_name, bill_amount, category_name}, currentWallet) =
     <div className="wallet-container">
       {walletBills && currentUser &&
       <>
-      <Link to="/form">
-        <button className="new-wallet-btn btn-hover">Add New Bill</button>
-      </Link>
-{/* Wallet Header and Info */}
+      <button className="new-wallet-btn btn-hover" onClick={() => showWalletForm()}>New Wallet</button>
+      {makeWallet &&
+
+      <form>
+        <label>Bill:</label>
+        <br />
+        <input
+          type="text"
+          name="walletName"
+          placeholder="Wallet name"
+          className="input-field"
+          value={newWallet.name}
+          onChange={(e) => handleNewWallet(e)}
+        ></input>
+        <br />
+        <label>Funds:</label>
+        <br />
+        <input
+          type="number"
+          name="walletAmount"
+          placeholder="Cost"
+          className="input-field"
+          value={newWallet.amount}
+          onChange={(e) => handleNewWallet(e)}
+        ></input>
+        <button type="submit" className="btn btn-hover">
+            Create Wallet
+          </button>
+      </form>
+      }
+
       <div className="wallet-info">
-        <h1 className="wallet-name">{currentWallet.name}</h1>
-        <h1 className="wallet-amount">Funds: {currentWallet.amount}</h1>
+        <h1 className="wallet-name">
+          {changeFunds ? 
+            <i class="fas fa-edit" onClick={() => updateWalletInfo(currentWallet.id)}></i> : <i class="fas fa-edit" onClick={() => changeWallet()}></i>  
+        }
+        
+          {changeFunds ? 
+          <input type="text" 
+          name="name"
+          value={walletInfo.name} 
+          onChange={(e) => handleWalletInfo(e)} 
+          placeholder={currentWallet.name}></input>: currentWallet.name}
+        </h1>
+          {changeFunds ? 
+          <input type="number" 
+          name="funds"
+          value={walletInfo.funds} 
+          onChange={(e) => handleWalletInfo(e)} 
+          placeholder={currentWallet.amount}></input>: 
+          <h1 className="wallet-amount">
+             Funds: {currentWallet.amount}
+          </h1>}
+        
       </div>
       <table className="bills">
         <thead>
@@ -202,7 +274,11 @@ const updateRow = ({id, bill_name, bill_amount, category_name}, currentWallet) =
         <tfoot>
         <td><p>Total Costs:</p></td>
         <td>{total}</td>
-        <td></td>
+        <td>
+        <Link to="/form">
+          <button className="new-bill-btn btn-hover">Add New Bill</button>
+        </Link>
+        </td>
         <td>
           <p>Remaining Funds: {currentWallet.amount - total}</p>
          </td>

@@ -58,7 +58,7 @@ const clearState = () => {
 };
 
   const addToBills = (e) => {
-    console.log(formData);
+    // console.log(formData);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
