@@ -1,11 +1,12 @@
-import { BrowserRouter as Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Home({currentUser}){
 console.log(currentUser)
   
   
   return (
-    
+    <>
+    {currentUser &&
     <div>
       <main className= "main-text">
         <p>Welcome, <span className="spendsy spendsy-animation">{currentUser.first_name}!</span>
@@ -13,7 +14,7 @@ console.log(currentUser)
           Let's get started! <br/>Your financial snapshot is just one click away </p>
         <div className='btn-container'>
         <Link to='/wallet/page'>
-          <button className='btn btn-hover'>View My Wallet </button>
+          <button className='btn btn-hover'>View My Wallets</button>
         </Link>
         <Link to = "/form">
           <button className='btn btn-hover'>Add Bill</button>
@@ -44,7 +45,8 @@ console.log(currentUser)
         <h2>Yeison, Aidan, Andrea</h2>
       </footer>
     </div>
-  
+      }
+    </>
   )
 }
 
