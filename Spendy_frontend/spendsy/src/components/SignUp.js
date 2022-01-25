@@ -1,5 +1,4 @@
-import NavBar from "./Navbar"
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import { useNavigate} from 'react-router-dom'
 
 function SignUp({setCurrentUser, currentUser}) {
@@ -17,23 +16,6 @@ function SignUp({setCurrentUser, currentUser}) {
     password: ""
   })
 
-  const createFirstWallet = () => {
-    
-    let walletAmount = prompt('How much would you like in your wallet?')
-
-    fetch(`/wallets`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: `${currentUser.first_name}'s Wallet`,
-        amount: walletAmount,
-        user_id: currentUser.id
-      })
-    })
-    .then(resp => resp.json())
-  }
 
   // Handles form data
   const handleChange = (e) => {

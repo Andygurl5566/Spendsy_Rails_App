@@ -8,4 +8,8 @@ class User < ApplicationRecord
   validates :email, email: true
   validates :password, length: {minimum: 8, too_short: 'Passwords must be at least 8 characters in length'}
   
+
+  def total
+    
+  end
 end

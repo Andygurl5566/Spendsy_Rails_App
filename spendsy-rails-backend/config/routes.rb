@@ -17,12 +17,12 @@ Rails.application.routes.draw do
 
   get '/userwallet/:id', to: 'users#user_wallet'
 
-  get '/total/:id', to: 'users#wallet_total'
-
   get '/hello', to: 'application#hello_world'
 
   # Wallet Routes
   resources :wallets
+
+  get '/total/:id', to: 'wallets#total'
 
   # Bill Routes
   resources :bills

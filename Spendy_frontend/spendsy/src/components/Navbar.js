@@ -1,4 +1,3 @@
-import {useState} from 'react'
 import {Link} from 'react-router-dom'
 
 function NavBar({currentUser, logout}) {
@@ -15,6 +14,9 @@ function NavBar({currentUser, logout}) {
           <>
             <Link to= "/">
               <button className="navlink" onClick={() => logout()}>Logout</button>
+            </Link>
+            <Link to='/form'>
+              <button className="navlink">New Bill</button>
             </Link>
             <Link to='/wallet/page'>
               <button className="navlink">Wallets</button>

@@ -127,8 +127,13 @@ main p span {
 }
 
 /* Table Styling */
-
 .wallet-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+}
+
+.wallet-table {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -235,16 +240,26 @@ button {
 
 /* Create Wallet Form */
 
-.create-wallet-form {
+.new-wallet-div {
   margin: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
   margin-top: 2rem;
+  align-items: center;
 }
 
-.create-wallet-form input {
-  margin: 2rem 0;
+.new-wallet-form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 1rem;
+  width: 20%;
+}
+
+.new-wallet-form > input {
+  width: 100%;
 }
 
 /* Bill Entry Form */

@@ -1,8 +1,18 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 
 function Wallet({currentUser, currentWallet, currentUser:{bills}}) {
+  
+  useEffect(() => {
+    fetch(`/userwallet/${currentWallet.id}`)
+    .then(resp => resp.json())
+    .then(data => setWalletBills(data.bills))
+
+    fetch(`/total/${currentWallet.id}`)
+    .then(resp => resp.json())
+    .then(total => setTotal(total))
+  }, [])
+
   // State Variables
   const [walletBills, setWalletBills] = useState([])
   const [total, setTotal] = useState(0)
@@ -10,12 +20,6 @@ function Wallet({currentUser, currentWallet, currentUser:{bills}}) {
   const [billAmount, setBillAmount] = useState(null)
   const [categoryName, setCategoryName] = useState('')
   const [changeFunds, setChangeFunds] = useState(false)
-  const [makeWallet, setMakeWallet] = useState(false)
-  const [newWallet, setNewWallet] = useState({
-    walletName: '',
-    walletAmount: 0,
-    user_id: currentUser.id
-  })
   const [inEditMode, setInEditMode] = useState({
     status: false,
     rowkey: null
@@ -25,7 +29,15 @@ function Wallet({currentUser, currentWallet, currentUser:{bills}}) {
     funds: 0
   })
 
+ const fundStyle = () => {
+   if(total > currentWallet.amount) {
+     return 'red'
+   } else {
+     return 'white'
+   }
+ }
 
+// Set table row to edit mode
   const onEdit = ({id}) => {
     setInEditMode({
         status: !inEditMode.status,
@@ -46,8 +58,6 @@ const handleCategoryName = (e) => {
   setCategoryName(e.target.value)
 }
 
-const showWalletForm = () => setMakeWallet(!makeWallet)
-const handleNewWallet = (e) =>   setNewWallet({ ...newWallet, [e.target.name]: e.target.value });
 
 const changeWallet = () => setChangeFunds(!changeFunds)
 
@@ -149,39 +159,10 @@ const updateRow = ({id, bill_name, bill_amount, category_name}, currentWallet) =
 // ---------------------------------------------------------------------
 
   return (
-    <div className="wallet-container">
+    <div className="wallet-table">
       {walletBills && currentUser &&
       <>
-      <button className="new-wallet-btn btn-hover" onClick={() => showWalletForm()}>New Wallet</button>
-      {makeWallet &&
-
-      <form>
-        <label>Bill:</label>
-        <br />
-        <input
-          type="text"
-          name="walletName"
-          placeholder="Wallet name"
-          className="input-field"
-          value={newWallet.name}
-          onChange={(e) => handleNewWallet(e)}
-        ></input>
-        <br />
-        <label>Funds:</label>
-        <br />
-        <input
-          type="number"
-          name="walletAmount"
-          placeholder="Cost"
-          className="input-field"
-          value={newWallet.amount}
-          onChange={(e) => handleNewWallet(e)}
-        ></input>
-        <button type="submit" className="btn btn-hover">
-            Create Wallet
-          </button>
-      </form>
-      }
+      
 
       <div className="wallet-info">
         <h1 className="wallet-name">
@@ -274,13 +255,9 @@ const updateRow = ({id, bill_name, bill_amount, category_name}, currentWallet) =
         <tfoot>
         <td><p>Total Costs:</p></td>
         <td>{total}</td>
+        <td></td>
         <td>
-        <Link to="/form">
-          <button className="new-bill-btn btn-hover">Add New Bill</button>
-        </Link>
-        </td>
-        <td>
-          <p>Remaining Funds: {currentWallet.amount - total}</p>
+          <p style={{color: fundStyle()}}>Remaining Funds: {currentWallet.amount - total}</p>
          </td>
         </tfoot>
       </table>

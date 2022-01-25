@@ -1,5 +1,4 @@
-import NavBar from "./Navbar";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import { Link } from "react-router-dom";
 // import styled from "styled-components";
 
@@ -7,7 +6,6 @@ import { Link } from "react-router-dom";
 
 function BillForm({currentUser}) {
   
-  const [billList, setBillList] = useState([]);
   const [formData, setFormData] = useState({
     bill_name: "",
     bill_amount: null,
@@ -43,9 +41,6 @@ const clearState = () => {
       })
     })
       .then((resp) => resp.json())
-      .then((data) => {
-        setBillList(data);
-      })
       
       clearState()
   };

@@ -5,6 +5,20 @@ class WalletsController < ApplicationController
     render json: wallets
   end
 
+  def show
+    wallet = Wallet.find(params[:id])
+    if wallet
+      render json: wallet
+    else 
+      render json: {errors: "Wallet not found"}, status: :not_found
+    end
+  end
+
+  def total
+    wallet = Wallet.find(params[:id])
+    render json: wallet.total
+  end
+
   def create
     wallet = Wallet.create(wallet_params)
     if wallet.valid?
@@ -26,8 +40,12 @@ class WalletsController < ApplicationController
 
   def update
     wallet = Wallet.find(params[:id])
-    wallet.update(wallet_params)
-    render json: wallet
+    if wallet
+      wallet.update(wallet_params)
+      render json: wallet
+    else
+      render json: {errors: wallet.errors.full_messages}, status: :unprocessable_entity
+    end
   end
 
 
