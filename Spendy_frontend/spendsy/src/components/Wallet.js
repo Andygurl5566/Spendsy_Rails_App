@@ -24,6 +24,8 @@ function Wallet({currentUser, currentWallet, currentUser:{bills}}) {
     status: false,
     rowkey: null
   })
+
+
   const [walletInfo, setWalletInfo] = useState({
     name: currentWallet.name,
     funds: 0
@@ -115,6 +117,8 @@ const updateWalletInfo = (id) => {
   setCategoryName('')
   }
 
+ 
+
 
 //  Delete a bill
   function handleBillDelete(id, currentWallet){
@@ -155,6 +159,22 @@ const updateRow = ({id, bill_name, bill_amount, category_name}, currentWallet) =
     })
 }
 
+ //  Delete a Wallet 
+ function handleWalletDelete(id, currentWallet){
+  if(window.confirm("Are you sure you want to delete this Wallet?")){
+     fetch(`/wallets/${id}`,{
+      method: "DELETE",  
+     })
+     .then(() => {
+       console.log("deleted")
+      //  fetch the updated data
+       getBills(currentWallet)
+      
+   })
+  
+}
+}
+
 
 // ---------------------------------------------------------------------
 
@@ -166,9 +186,14 @@ const updateRow = ({id, bill_name, bill_amount, category_name}, currentWallet) =
 
       <div className="wallet-info">
         <h1 className="wallet-name">
+          
           {changeFunds ? 
             <i class="fas fa-edit" onClick={() => updateWalletInfo(currentWallet.id)}></i> : <i class="fas fa-edit" onClick={() => changeWallet()}></i>  
-        }
+          }
+
+
+          {/* delete icon */}
+          {<i class="fas fa-trash-alt" onClick={() => handleWalletDelete(currentWallet.id)} ></i>}
         
           {changeFunds ? 
           <input type="text" 
@@ -185,6 +210,10 @@ const updateRow = ({id, bill_name, bill_amount, category_name}, currentWallet) =
           placeholder={currentWallet.amount}></input>: 
           <h1 className="wallet-amount">
              Funds: {currentWallet.amount}
+
+             
+
+             
           </h1>}
         
       </div>

@@ -31,6 +31,8 @@ function WalletPage({currentUser}){
     .then(resp => resp.json()).then(() => window.location.reload())
   }
 
+  
+
 
   return (
     <div>
@@ -59,7 +61,8 @@ function WalletPage({currentUser}){
               value={newWallet.amount}
               onChange={(e) => handleNewWallet(e)}
             ></input>
-            <button type="submit" className="btn btn-hover">
+           
+            <button type="submit" className="btn btn-hover2">
                 Create Wallet
               </button>
           </form>

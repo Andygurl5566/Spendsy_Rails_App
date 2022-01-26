@@ -347,3 +347,17 @@ a:visited {
 .errorCode{
   color: rgb(194, 61, 61);
 }
+
+.fa-edit{
+ 
+  padding-right: 6px
+}
+
+.fa-trash-alt{
+  
+  padding-right: 20px
+}
+
+.btn-hover2{
+margin-top: 20px;
+}
