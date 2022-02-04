@@ -169,11 +169,14 @@ const updateRow = ({id, bill_name, bill_amount, category_name}, currentWallet) =
        console.log("deleted")
       //  fetch the updated data
        getBills(currentWallet)
+     
       
-   })
+   }).then(window.location.reload())
   
 }
 }
+
+
 
 
 // ---------------------------------------------------------------------

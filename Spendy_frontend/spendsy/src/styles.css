@@ -320,11 +320,14 @@ align-items: center;
 .btn-hover {
   transition: 0.3s;
   border-radius: 5px;
+  padding:5px;
+  
 }
 
 .btn-hover:hover {
   background-color: #41d887;
   color: black;
+ 
 }
 
 .form-btn-container {
