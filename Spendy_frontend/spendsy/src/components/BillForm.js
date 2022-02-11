@@ -8,7 +8,7 @@ function BillForm({currentUser}) {
   const [formData, setFormData] = useState({
     bill_name: "",
     bill_amount: null,
-    category_name: "",
+    category_name: "Misc.",
     wallet_id: null,
   });
 
@@ -65,6 +65,7 @@ const clearState = () => {
         <br />
         <input
           type="text"
+          required='required'
           name="bill_name"
           placeholder="Bill Name"
           className="input-field"
@@ -76,6 +77,7 @@ const clearState = () => {
         <br />
         <input
           type="number"
+          required='required'
           name="bill_amount"
           placeholder="Cost"
           className="input-field"
@@ -86,6 +88,7 @@ const clearState = () => {
         <label>Wallet:</label>
         <br />
         <select
+          required='required'
           className="input-field"
           value={formData.wallet_id}
           onChange={addToBills}

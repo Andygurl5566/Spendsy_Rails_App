@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user
-  skip_before_action :authenticate_user, only: [:create, :show, :user_wallet, :wallet_total]
+  skip_before_action :authenticate_user, only: [:create, :user_wallet]
 
   def index
     user = User.all
@@ -20,7 +20,6 @@ class UsersController < ApplicationController
   def user_wallet
     user = User.find(session[:user_id])
     wallet = user.wallets.find(params[:id])
-    wallet_total = wallet.total
     render json: wallet, include: :bills
   end
 

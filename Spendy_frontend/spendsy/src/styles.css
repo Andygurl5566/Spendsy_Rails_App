@@ -351,13 +351,15 @@ a:visited {
   color: rgb(194, 61, 61);
 }
 
+.fas {
+  cursor: pointer;
+}
+
 .fa-edit{
- 
   padding-right: 6px
 }
 
 .fa-trash-alt{
-  
   padding-right: 20px
 }
 

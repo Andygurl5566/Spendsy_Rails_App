@@ -40,10 +40,11 @@ function WalletPage({currentUser}){
           <button className="new-wallet-btn btn-hover" onClick={() => showWalletForm()}>New Wallet</button>
           {makeWallet &&
           <form className="new-wallet-form" onSubmit={(e) => createWallet(e, newWallet)}>
-            <label>Bill:</label>
+            <label>Name:</label>
             <br />
             <input
               type="text"
+              required='required'
               name="walletName"
               placeholder="Wallet name"
               className="input-field"
@@ -55,6 +56,7 @@ function WalletPage({currentUser}){
             <br />
             <input
               type="number"
+              required='required'
               name="walletAmount"
               placeholder="Cost"
               className="input-field"
