@@ -16,9 +16,14 @@ function Wallet({currentUser, currentWallet, currentUser:{bills}}) {
   // State Variables
   const [walletBills, setWalletBills] = useState([])
   const [total, setTotal] = useState(0)
-  const [billName, setBillName] = useState('');
-  const [billAmount, setBillAmount] = useState(null)
-  const [categoryName, setCategoryName] = useState('')
+  const [billData, setBillData] = useState({
+    billName: '',
+    billAmount: null,
+    categoryName: '',
+  })
+  // const [billName, setBillName] = useState('');
+  // const [billAmount, setBillAmount] = useState(null)
+  // const [categoryName, setCategoryName] = useState('')
   const [changeFunds, setChangeFunds] = useState(false)
   const [inEditMode, setInEditMode] = useState({
     status: false,
@@ -46,19 +51,10 @@ function Wallet({currentUser, currentWallet, currentUser:{bills}}) {
         rowKey: id
     })
   }
-
   // Handle State on change functions
-const handleBillName = (e) => {
-  setBillName(e.target.value)
-}
-
-const handleBillAmount = (e) => {
-  setBillAmount(e.target.value)
-}
-
-const handleCategoryName = (e) => {
-  setCategoryName(e.target.value)
-}
+  const handleBillData = (e) => {
+    setBillData({...billData, [e.target.name]: e.target.value})
+  }
 
 
 const changeWallet = () => setChangeFunds(!changeFunds)
@@ -85,6 +81,7 @@ const updateWalletInfo = (id) => {
     window.location.reload()
   })
 }
+
 // reset the inEditMode state value
   const onCancel = () => {
     setInEditMode({
@@ -92,8 +89,6 @@ const updateWalletInfo = (id) => {
         rowKey: null
     })
 }
-
-
 
 
 // Get all the bills for the wallet (after deleting or editing a bill)
@@ -116,8 +111,6 @@ const updateWalletInfo = (id) => {
   setBillAmount(null)
   setCategoryName('')
   }
-
- 
 
 
 //  Delete a bill
@@ -236,9 +229,9 @@ const updateRow = ({id, bill_name, bill_amount, category_name}, currentWallet) =
               <td>
                 {inEditMode.status && inEditMode.rowKey === bill.id ? (
                     <input 
-                      value={billName}
+                      value={billData.billName}
                       placeholder={bill.bill_name}
-                     onChange={(e) => handleBillName(e)}
+                     onChange={(e) => handleBillData(e)}
                     />
                 ) : bill.bill_name}
                     </td>
@@ -247,16 +240,16 @@ const updateRow = ({id, bill_name, bill_amount, category_name}, currentWallet) =
                 {inEditMode.status && inEditMode.rowKey === bill.id ? (
                     <input 
                     type="number"
-                    value={billAmount}
+                    value={billData.billAmount}
                     placeholder = {bill.bill_amount}
-                    onChange={(e) => handleBillAmount(e)}
+                    onChange={(e) => handleBillData(e)}
                     />
                 ) : bill.bill_amount}
                     </td>
 
               <td>
                 {inEditMode.status && inEditMode.rowKey === bill.id ? (
-                    <select onChange={(e) => handleCategoryName(e)}>
+                    <select onChange={(e) => handleBillData(e)}>
                       <option value="Select">category: </option>
                       <option value="Housing">Housing</option>
                       <option value="Personals">Personals</option>
