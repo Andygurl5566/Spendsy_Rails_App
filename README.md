@@ -13,3 +13,7 @@ Features include :
 - Password protection and validation
 - Front and backend error-handling 
 - Custom CSS 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ee63de42b43addd3029907b0990167415859056f
