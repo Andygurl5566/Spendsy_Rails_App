@@ -3,11 +3,10 @@ import { useNavigate} from 'react-router-dom'
 
 function SignUp({setCurrentUser, currentUser}) {
 
-  function navToSignin(){
+  const navToSignin = () => {
   navigate("/signin")
   }  
 
-  const [loggingIn, setLoggingIn] = useState(true)
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: "",
@@ -67,7 +66,10 @@ function SignUp({setCurrentUser, currentUser}) {
 
   return (
     <div>
-      <h1 class="login-requirements">{loggingIn ? <> <h3>Signup</h3> <br></br> Please create a username and password</>:'Enter Username and Password' }</h1>
+      <h1 class="login-requirements">
+        <h3>Signup</h3> 
+        <br></br> 
+        <h3>Please create a username and password</h3></h1>
       <form className="bill-entry login-form" onSubmit={handleSubmit}>
       <label>First Name: </label>
         <input
@@ -108,11 +110,10 @@ function SignUp({setCurrentUser, currentUser}) {
           className='input-field'
           value={formData.password}
           placeholder='Password'
-          onChange={handleChange}></input>
+          onChange={handleChange}></input>  
           <div className="form-btn-container">
           
-          {!loggingIn ? <p  className="btn btn-hover" >Log In</p>
-           : <p className="btn btn-hover" onClick={navToSignin}>Login</p>}
+          <p className="btn btn-hover" onClick={() => navToSignin()}>Login</p>
            <button className="btn btn-hover">Continue</button>
         </div>
       </form>

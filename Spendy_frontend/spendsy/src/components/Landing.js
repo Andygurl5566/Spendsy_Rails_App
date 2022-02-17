@@ -34,11 +34,14 @@ function Landing(){
 
       <div className="customer-faces">
         <img src="https://www.kindpng.com/picc/m/673-6735417_young-lady-smiling-radiantly-smiling-black-lady-png.png"
-        className="customer-image"/>
+        className="customer-image"
+        alt = ''/>
         <img src="https://i.pinimg.com/originals/d1/b8/27/d1b8272dba69e9a3384f47797aa71e93.jpg  "
-        className="customer-image"/>
+        className="customer-image"
+        alt = ''/>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoPCG0L4UoRdw9Sg5_1eQuRIpR310O8Q-EpA&usqp=CAU"
-        className="customer-image"/>
+        className="customer-image"
+        alt = ''/>
       </div>
 
       <footer>

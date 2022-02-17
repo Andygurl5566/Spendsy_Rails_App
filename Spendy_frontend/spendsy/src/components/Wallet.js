@@ -107,9 +107,11 @@ const updateWalletInfo = (id) => {
 
 // Clears all state so next edit fields are empty
   const clearState = () => {
-  setBillName('')
-  setBillAmount(null)
-  setCategoryName('')
+  setBillData({
+    billName: '',
+    billAmount: null,
+    categoryName: ''
+  })
   }
 
 
@@ -229,6 +231,7 @@ const updateRow = ({id, bill_name, bill_amount, category_name}, currentWallet) =
               <td>
                 {inEditMode.status && inEditMode.rowKey === bill.id ? (
                     <input 
+                      name= 'billName'
                       value={billData.billName}
                       placeholder={bill.bill_name}
                      onChange={(e) => handleBillData(e)}
@@ -240,6 +243,7 @@ const updateRow = ({id, bill_name, bill_amount, category_name}, currentWallet) =
                 {inEditMode.status && inEditMode.rowKey === bill.id ? (
                     <input 
                     type="number"
+                    name= 'billAmount'
                     value={billData.billAmount}
                     placeholder = {bill.bill_amount}
                     onChange={(e) => handleBillData(e)}
@@ -249,7 +253,8 @@ const updateRow = ({id, bill_name, bill_amount, category_name}, currentWallet) =
 
               <td>
                 {inEditMode.status && inEditMode.rowKey === bill.id ? (
-                    <select onChange={(e) => handleBillData(e)}>
+                    <select onChange={(e) => handleBillData(e)}
+                    name= 'categoryName'>
                       <option value="Select">category: </option>
                       <option value="Housing">Housing</option>
                       <option value="Personals">Personals</option>
@@ -265,11 +270,11 @@ const updateRow = ({id, bill_name, bill_amount, category_name}, currentWallet) =
             <td>
               {inEditMode.status && inEditMode.rowKey === bill.id ? 
             <>
-              <button className="edit-btn table-btn" onClick={() => updateRow({id: bill.id, bill_name: billName, bill_amount: billAmount, category_name: categoryName}, currentWallet.id)}>
+              <button className="edit-btn table-btn" onClick={() => updateRow({id: bill.id, bill_name: billData.billName, bill_amount: billData.billAmount, category_name: billData.categoryName}, currentWallet.id)}>
                 Save</button>
               <button className="edit-btn table-btn" onClick={() => handleBillDelete(bill.id, currentWallet.id)}>Delete</button> 
             </> 
-            :<button className=" edit-btn table-btn" onClick={() => onEdit({id: bill.id, currentBillName: billName, currentBillAmount: billAmount, currentCategoryName: categoryName})}>
+            :<button className=" edit-btn table-btn" onClick={() => onEdit({id: bill.id, currentBillName: billData.billName, currentBillAmount: billData.billAmount, currentCategoryName: billData.categoryName})}>
                 Edit
                 </button>}
               </td>

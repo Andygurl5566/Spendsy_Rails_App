@@ -7,7 +7,6 @@ function navToSignup(){
   navigate("/signup")
 }
 
-const [loggingIn, setLoggingIn] = useState(true)
 const [showError, setShowError] = useState(false)
 const navigate = useNavigate()
 const [formData, setFormData] = useState({
@@ -62,8 +61,11 @@ const handleSubmit = (e) => {
 
   return (
     <div>
-      <h1 class="login-requirements">{loggingIn ? <> <h3>Log in</h3> <br></br>Enter Username and Password </>: 'Please create a username and password'}</h1>
-      <p class="login-requirements" > {showError == false ? "": <h4 className="errorCode">Incorrect Email or Password. Please try Again</h4>} </p>
+      <h1 class="login-requirements">
+        <h3>Log in</h3> <br></br>
+        <h3>Enter Username and Password</h3>
+      </h1>
+      <p class="login-requirements" > {showError === false ? "": <h4 className="errorCode">Incorrect Email or Password. Please try Again</h4>} </p>
 
       <form className="bill-entry login-form" onSubmit={handleSubmit}>
         
@@ -89,8 +91,7 @@ const handleSubmit = (e) => {
           onChange={handleChange}></input>
           <div className="form-btn-container">
           
-          {!loggingIn ? <p  className="btn btn-hover" >Log In</p>
-           : <p className="btn btn-hover" onClick={navToSignup} >Sign Up</p>}
+            <p  className="btn btn-hover" onClick={() => navToSignup()}>Sign Up</p>
            <button className="btn btn-hover">Continue</button>
         </div>
       </form>
